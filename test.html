@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti...</title>
+    <style>
+        /* Diseño Minimalista y Colores Suaves */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfafb;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: opacity 0.8s ease-in-out;
+            max-width: 350px;
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: 400;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #4a4a4a;
+        }
+
+        p {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        input {
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            outline: none;
+            text-align: center;
+            width: 80%;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        input:focus {
+            border-color: #ffb3c6;
+            box-shadow: 0 0 10px rgba(255, 179, 198, 0.2);
+        }
+
+        button {
+            background-color: #ffb3c6;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            width: 90%;
+        }
+
+        button:hover {
+            background-color: #ff91a4;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Efecto de vibración cuando la clave es incorrecta */
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+            border-color: #ff6b6b !important;
+            color: #ff6b6b;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(3px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-5px, 0, 0); }
+            40%, 60% { transform: translate3d(5px, 0, 0); }
+        }
+
+        /* Estilos para el mensaje secreto (inicialmente oculto) */
+        #secretMessage {
+            display: none;
+            opacity: 0;
+            text-align: center;
+        }
+
+        #secretMessage h2 {
+            color: #ff91a4;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        #secretMessage p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de Bloqueo -->
+    <div id="vault" class="container">
+        <h1>Mensajito para ti</h1>
+        <p>Ingresa la contraseña (Formato DDMM) (es tu cumple).</p>
+        <input type="password" id="password" placeholder="****" maxlength="4" autocomplete="off">
+        <br>
+        <button onclick="checkPassword()">Desbloquear</button>
+    </div>
+
+    <!-- Mensaje Oculto -->
+    <div id="secretMessage" class="container">
+        <h2>Hola amor ❤️</h2>
+        <p>Quería sorprenderte con algo diferente, espero que te guste. <br><br>Quería desearte un hermoso dia y que te vaya muy bien en tu examen, te va a ir super super bien, te amo preciosa hermosa, quisiera poder estar ahi contigo para darte todo mi apoyo y estar conitgo.<br> <br>Te amo y te extraño como no tienes idea. ❤️</p>
+    </div>
+
+    <script>
+        function checkPassword() {
+            const input = document.getElementById("password");
+            const vault = document.getElementById("vault");
+            const secretMessage = document.getElementById("secretMessage");
+            
+            // --- PERSONALIZA AQUÍ EL CÓDIGO ---
+            const codigoCorrecto = "0601"; // Formato DDMM (06 de enero)
+
+            if (input.value === codigoCorrecto) {
+                // Animación de éxito (fade out)
+                vault.style.opacity = "0";
+                
+                setTimeout(() => {
+                    vault.style.display = "none";
+                    secretMessage.style.display = "block";
+                    
+                    // Animación de entrada (fade in) para el mensaje
+                    setTimeout(() => {
+                        secretMessage.style.opacity = "1";
+                    }, 50);
+                }, 800); 
+
+            } else {
+                // Activar animación de error
+                input.classList.add("shake");
+                input.value = "";
+                input.placeholder = "Error...";
+                
+                // Limpiar la clase para poder reintentar
+                setTimeout(() => {
+                    input.classList.remove("shake");
+                    input.placeholder = "****";
+                }, 800);
+            }
+        }
+
+        // Permitir que el botón "Enter" también funcione
+        document.getElementById("password").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
